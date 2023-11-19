@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 struct SandBoxConfig {
     /// Sandbox version. This settings is not meant to be updated manually.
     version: u8,
@@ -211,7 +213,7 @@ struct SandBoxConfig {
     /// Strength.
     ///
     /// Default to `false`.
-    xp_multipllier_affects_passive: bool,
+    xp_multiplier_affects_passive: bool,
     /// Multiply or reduce engine general loudness.
     ///
     /// Minimum: `0.0`, Maximum: `100.0`, Default: `1.0`.
@@ -396,13 +398,13 @@ struct SandBoxConfig {
     /// 4. Often.
     ///
     /// Default to `Sometimes`.
-    generator_spawning: Rarity,
+    generator_spawning: Spawning,
     /// Governs how much fuel is consumed by generators per in-game hour.
     ///
     /// Zero means generators doesn't consume fuel.
     ///
     /// Minimum: `0.0`, Maximum: `100.0`, Default: `1.0`.
-    generator_fuel_conception: f32,
+    generator_fuel_consumption: f32,
     /// Increase or decrease probability of discovering randomized safe house on the map.
     ///
     /// Either burnt out, containing loot stashes, dead survivor bodies, etc.
@@ -488,7 +490,7 @@ struct SandBoxConfig {
     /// Governs how many hours zombie bodies take to disappear.
     ///
     /// Minimum: `-1.0`, Maximum: `2147483647.0`, Default: `216.0`.
-    hours_from_corpse_removal: f32,
+    hours_for_corpse_removal: f32,
     /// Governs impact that nearby decaying bodies has on the player's health and emotions.
     ///
     /// 1. None.
@@ -703,6 +705,153 @@ struct SandBoxConfig {
     zombie_config: ZombieConfig,
 }
 
+impl Default for SandBoxConfig {
+    fn default() -> Self {
+        Self {
+            version: 5,
+            zombies: Count::Normal,
+            distribution: Distribution::UrbanFocused,
+            day_length: DayLength::Hrs1,
+            start_month: StartMonth::July,
+            start_day: 9,
+            start_time: StartTime::AM9,
+            water_shut: ShutPeriod::ZeroToThirtyDays,
+            elec_shut: ShutPeriod::ZeroToThirtyDays,
+            water_shut_modifier: 14,
+            elec_shut_modifier: 14,
+            food_loot: Rarity::Rare,
+            canned_food_loot: Rarity::Rare,
+            literature_loot: Rarity::Rare,
+            survival_gears_loot: Rarity::Rare,
+            medical_loot: Rarity::Rare,
+            weapon_loot: Rarity::Rare,
+            ranged_weapon_loot: Rarity::Rare,
+            ammo_loot: Rarity::Rare,
+            mechanics_loot: Rarity::Rare,
+            other_loot: Rarity::Rare,
+            temperature: Temperature::Normal,
+            rain: Rain::Normal,
+            erosion_speed: Speed::Normal,
+            erosion_days: 0,
+            xp_multiplier: 1.0,
+            xp_multiplier_affects_passive: false,
+            zombies_attraction_multiplier: 1.0,
+            vehicle_easy_use: false,
+            farming: Speed::Normal,
+            compost_time: CompostTime::TwoWeeks,
+            stats_decrease: Speed::Normal,
+            nature_abundance: Abundance::Normal,
+            alarm: Frequency::Sometimes,
+            locked_houses: Frequency::VeryOften,
+            starter_kit: false,
+            nutrition: true,
+            food_rot_speed: Speed::Normal,
+            fridge_factor: Effectiveness::Normal,
+            loot_respawn: LootRespawn::EveryMonth,
+            seen_hours_prevent_loot_respawn: 0,
+            world_item_removal_list: vec![
+                "Base.Hat".to_owned(),
+                "Base.Glasses".to_owned(),
+                "Base.Maggots".to_owned(),
+            ],
+            hours_for_item_removal: 24.0,
+            item_removal_list_blacklist_toggle: false,
+            time_since_apo: 0,
+            plant_resilience: Count::Normal,
+            plant_abundance: Abundance::Normal,
+            end_regen: Speed::Normal,
+            helicopter: Regularity::Once,
+            meta_event: true,
+            sleeping_event: false,
+            generator_spawning: Spawning::Sometimes,
+            generator_fuel_consumption: 1.0,
+            survivor_house_chance: Rarity::Rare,
+            vehicle_story_chance: Rarity::Rare,
+            zone_story_chance: Rarity::Rare,
+            annotated_map_chance: Rarity::Rare,
+            character_free_points: 0,
+            construction_bonus_points: Effectiveness::Normal,
+            night_darkness: Darkness::Normal,
+            night_length: NightLength::Normal,
+            injury_severity: false,
+            bone_fracture: true,
+            hours_for_corpse_removal: 216.0,
+            decaying_corpse_health_impact: Quantity::Normal,
+            blood_level: Quantity::Normal,
+            clothing_degradation: Degradation::Normal,
+            fire_spread: true,
+            days_for_rotten_food_removal: -1,
+            allow_exterior_generator: true,
+            fog_intensity: false,
+            rain_intensity: false,
+            enable_snow_on_ground: true,
+            multi_hit_zombies: false,
+            rear_vulnerability: Vulnerability::High,
+            attack_block_movements: true,
+            all_clothes_unlocked: false,
+            enable_tainted_water_text: false,
+            car_spawn_rate: SpawnRate::Low,
+            chance_has_gas: Chance::Low,
+            initial_gas: Chance::Normal,
+            fuel_station_gas: GasQuantity::Normal,
+            car_gas_consumption: 1.0,
+            locked_car: Rarity::Rare,
+            car_general_condition: Effectiveness::Low,
+            car_damage_impact: Effectiveness::Normal,
+            damage_to_player_from_hit_by_a_car: Quantity::None,
+            traffic_jam: true,
+            car_alarm: Rarity::ExtremelyRare,
+            player_damage_from_crash: true,
+            siren_shutoff_hours: 0.0,
+            recently_survivor_vehicles: Quantity::Low,
+            enable_vehicles: true,
+            enable_poisoning: true,
+            maggot_spawn: true,
+            light_bulb_lifespan: 1.0,
+            map: Map {
+                allow_mini_map: false,
+                allow_world_map: true,
+                map_all_known: false,
+            },
+            zombie_lore: ZombieLore {
+                speed: ZombieSpeed::FastShamblers,
+                strength: ZombieStrength::Normal,
+                toughness: Toughness::Normal,
+                transmission: Transmission::BloodAndSaliva,
+                mortality: Mortality::TwoToThreeDays,
+                reanimate: Reanimation::ZeroToOneMinutes,
+                cognition: Cognition::BasicNavigation,
+                crawl_under_vehicle: Crawling::Often,
+                memory: Memory::Normal,
+                sight: Sight::Normal,
+                hearing: Hearing::Normal,
+                thump_no_chasing: false,
+                thump_on_construction: true,
+                active_only: false,
+                trigger_house_alarm: false,
+                zombies_drag_down: true,
+                zombies_fence_lunge: true,
+                disable_fake_dead: false,
+            },
+            zombie_config: ZombieConfig {
+                population_multiplier: 1.0,
+                population_start_multiplier: 1.0,
+                population_peak_multiplier: 1.5,
+                population_peak_day: 28,
+                respawn_hours: 72.0,
+                respawn_unseen_hours: 16.0,
+                respawn_multiplier: 0.1,
+                redistribute_hours: 12.0,
+                follow_sound_distance: 100,
+                rally_group_size: 20,
+                rally_travel_distance: 20,
+                rally_group_separation: 15,
+                rally_group_radius: 3,
+            },
+        }
+    }
+}
+
 struct Map {
     /// Allow the user to use the mini-map.
     ///
@@ -724,6 +873,7 @@ struct ZombieLore {
     /// 1. Sprinters.
     /// 2. Fast shamblers.
     /// 3. Shamblers.
+    ///
     /// Default to `Fast Shamblers`.
     speed: ZombieSpeed,
     /// Controls the damage zombies inflict per attack.
@@ -997,6 +1147,13 @@ enum ShutPeriod {
     ZeroToOneYear,
     ZeroToFiveYears,
     TwoToSixMonths,
+}
+
+enum Spawning {
+    ExtremelyRare,
+    Rare,
+    Sometimes,
+    Often,
 }
 
 enum Rarity {
